@@ -11,14 +11,24 @@
     "check-types": "next typegen && tsc --noEmit"
   },
   "dependencies": {
+    "@repo/types": "*",
+    "@repo/typescript-config": "*",
     "@repo/ui": "*",
+    "@tailwindcss/postcss": "^4.2.2",
+    "axios": "^1.14.0",
+    "clsx": "^2.1.1",
+    "dotenv": "^16.0.3",
     "next": "16.2.0",
+    "postcss": "^8.4.31",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "react-toastify": "^11.0.5",
+    "tailwindcss": "^4.2.2"
   },
   "devDependencies": {
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
+    "@types/axios": "^0.9.36",
     "@types/node": "^22.15.3",
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",
