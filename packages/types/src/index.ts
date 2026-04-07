@@ -41,3 +41,10 @@ const SelectedTriggerSchema = z.object({
 
 type TypeSelectedTrigger = z.infer<typeof SelectedTriggerSchema>;
 
+const SelectedActionSchema = z.object({
+  availableActionId: z.string(),
+  actionType: z.string(),
+  actionMetaData: z.any().optional(),
+});
+
+type TypeSelectedAction = z.infer<typeof SelectedActionSchema>;
