@@ -25,8 +25,7 @@ model Zap {
   name        String   @default("New Zap")
   userId      Int
   zapRun      ZapRun[]
-  triggerId   String
-  trigger     Trigger? @relation(fields: [], references: [])
+  trigger     Trigger?
   actions     Action[]
   user        User     @relation(fields: [userId], references: [id])
   createdDate DateTime @default(now())
@@ -34,15 +33,20 @@ model Zap {
 }
 
 model ZapRun {
-  zap   Zap?    @relation(fields: [zapId], references: [id])
-  zapId String?
+  id           String        @id @default(uuid())
+  type         String        @unique
+  action       Action[]
+  image        String
+  zap          Zap?          @relation(fields: [zapId], references: [id])
+  zapId        String?
+  zapRunOutbox ZapRunOutbox?
 }
 
 model Trigger {
   id        String            @id @default(uuid())
   metadata  Json              @default("{}")
   triggerID String
-  zaps      Zap[]
+  zap       Zap               @relation(fields: [zapId], references: [id])
   zapId     String            @unique
   trigger   AvailableTriggers @relation(fields: [triggerID], references: [id])
 }
@@ -55,6 +59,8 @@ model Action {
   action       AvailableActions @relation(fields: [actionId], references: [id])
   sortingOrder Int              @default(0)
   metadata     Json             @default("{}")
+  zapRun       ZapRun?          @relation(fields: [zapRunId], references: [id])
+  zapRunId     String?
 }
 
 model AvailableActions {
