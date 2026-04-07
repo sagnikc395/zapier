@@ -38,3 +38,20 @@ export async function sendEmail(
     console.log(error);
   }
 }
+
+export async function sendEmailWithTextBody(
+  toAddr: string,
+  subject: string,
+  body: string,
+) {
+  try {
+    await transporter.sendMail({
+      from: process.env.SENDER_EMAIL,
+      toAddr,
+      subject,
+      text: body,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
