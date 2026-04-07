@@ -9,4 +9,13 @@ const SignUpSchema = z.object({
 
 type TypeSignUp = z.infer<typeof SignUpSchema>;
 
+const SignInSchema = z.object({
+  email: z.string().email({
+    message: "Enter a valid email",
+  }),
+  password: z.string().min(8),
+});
+
+type TypeSignIn = z.infer<typeof SignInSchema>;
+
 
