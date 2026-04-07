@@ -18,4 +18,14 @@ const SignInSchema = z.object({
 
 type TypeSignIn = z.infer<typeof SignInSchema>;
 
+// zap schema
+
+const CreateZapSchema = z.object({
+  availableTriggerId: z.string(),
+  triggerType: z.string(),
+  triggerMetaData: z.any().optional(),
+});
+
+type TypeCreateZapSchema = z.infer<typeof CreateZapSchema>;
+
 
