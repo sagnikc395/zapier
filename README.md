@@ -13,8 +13,7 @@ receiving external events, reliably queuing them, and executing individual
 actions — can scale independently. Reliability is handled via the
 **transactional outbox pattern**: incoming trigger events are written to the
 database in the same transaction as the ZapRun, and a separate processor
-publishes them to Kafka. Workers then consume Kafka messages, execute one
-action at a time, and re-enqueue the next action until the Zap finishes.
+publishes them to Kafka for downstream consumption.
 
 ## Features
 
@@ -68,18 +67,7 @@ High-level flow of a Zap from trigger to completion:
                                                       ▼
                                              ┌─────────────────┐
                                              │      Kafka      │
-                                             └────────┬────────┘
-                                                      │ consume
-                                                      ▼
-                                             ┌─────────────────┐
-                                             │     worker      │
-                                             │ runs one action │
-                                             │ + enqueues next │
-                                             └────────┬────────┘
-                                                      │
-                                   ┌──────────────────┼──────────────────┐
-                                   ▼                  ▼                  ▼
-                              email action      http action       …more actions
+                                             └─────────────────┘
 ```
 
 Key ideas:
@@ -96,9 +84,6 @@ Key ideas:
   DB transaction — no event is lost even if Kafka is momentarily unavailable.
 - The **processor** polls the outbox table and publishes pending runs to
   Kafka, then marks them as dispatched.
-- The **worker** consumes Kafka, executes a single action at a time (e.g.
-  send email via the shared `email` package), updates progress in Postgres,
-  and re-publishes the next action in the chain until the Zap run completes.
 
 ### Web app routes
 
@@ -124,9 +109,8 @@ root/
 ├── apps/
 │   ├── web/               # Next.js frontend — login, dashboard, visual Zap editor
 │   ├── server/            # Express REST API — auth, zaps, triggers, actions
-│   ├── hooks/              # Webhook ingress — receives external trigger events
-│   ├── processor/         # Outbox poller — drains ZapRunOutbox into Kafka
-│   └── worker/            # Kafka consumer — executes one action, enqueues next
+│   ├── hooks/             # Webhook ingress — receives external trigger events
+│   └── processor/         # Outbox poller — drains ZapRunOutbox into Kafka
 ├── packages/
 │   ├── db/                # Prisma schema + generated client (PostgreSQL)
 │   ├── kafka/             # Shared Kafka producer/consumer config
