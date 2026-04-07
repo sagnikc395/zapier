@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zapier - Welcome</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "DM Sans", sans-serif;
+        background-color: #f5f0eb;
+        color: #1a1a1a;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+      }
+
+      .email-wrapper {
+        max-width: 640px;
+        width: 100%;
+      }
+
+      /* Header bar */
+      .email-header {
+        background-color: #ff4a00;
+        padding: 20px 40px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .logo-text {
+        font-family: "Playfair Display", serif;
+        font-size: 22px;
+        font-weight: 600;
+        color: #fff;
+        letter-spacing: -0.3px;
+      }
+
+      .logo-dot {
+        width: 8px;
+        height: 8px;
+        background: #fff;
+        border-radius: 50%;
+        opacity: 0.7;
+      }
+
+      /* Hero section */
+      .email-hero {
+        background-color: #1c1c1c;
+        padding: 52px 40px 44px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .email-hero::before {
+        content: "";
+        position: absolute;
+        top: -60px;
+        right: -60px;
+        width: 240px;
+        height: 240px;
+        border-radius: 50%;
+        background: #ff4a00;
+        opacity: 0.08;
+      }
+
+      .hero-eyebrow {
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        color: #ff4a00;
+        margin-bottom: 16px;
+      }
+
+      .hero-heading {
+        font-family: "Playfair Display", serif;
+        font-size: 42px;
+        font-weight: 400;
+        color: #fff;
+        line-height: 1.15;
+        margin-bottom: 20px;
+      }
+
+      .hero-heading em {
+        font-style: italic;
+        color: #ff4a00;
+      }
+
+      .hero-sub {
+        font-size: 15px;
+        font-weight: 300;
+        color: rgba(255, 255, 255, 0.6);
+        line-height: 1.7;
+        max-width: 420px;
+      }
+
+      /* Body */
+      .email-body {
+        background-color: #fff;
+        padding: 44px 40px;
+      }
+
+      /* Feature blocks */
+      .feature-block {
+        border-left: 3px solid #ff4a00;
+        padding: 18px 20px;
+        background: #fafafa;
+        margin-bottom: 10px;
+      }
+
+      .feature-label {
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #ff4a00;
+        margin-bottom: 6px;
+      }
+
+      .feature-title {
+        font-family: "Playfair Display", serif;
+        font-size: 17px;
+        font-weight: 600;
+        color: #1c1c1c;
+        margin-bottom: 8px;
+      }
+
+      .feature-text {
+        font-size: 14px;
+        font-weight: 300;
+        color: #555;
+        line-height: 1.75;
+      }
+
+      /* Steps */
+      .steps {
+        margin: 32px 0;
+      }
+
+      .steps-heading {
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        color: #999;
+        margin-bottom: 20px;
+      }
+
+      .step {
+        display: flex;
+        gap: 18px;
+        align-items: flex-start;
+        margin-bottom: 20px;
+      }
+
+      .step-number {
+        flex-shrink: 0;
+        width: 32px;
+        height: 32px;
+        background: #ff4a00;
+        color: #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 500;
+        margin-top: 2px;
+      }
+
+      .step-content strong {
+        display: block;
+        font-size: 14px;
+        font-weight: 500;
+        color: #1c1c1c;
+        margin-bottom: 3px;
+      }
+
+      .step-content span {
+        font-size: 13px;
+        font-weight: 300;
+        color: #777;
+        line-height: 1.6;
+      }
+
+      /* CTA */
+      .cta-wrap {
+        margin: 36px 0 0;
+        text-align: center;
+      }
+
+      .cta-btn {
+        display: inline-block;
+        background-color: #ff4a00;
+        color: #fff;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        padding: 15px 40px;
+        border-radius: 2px;
+      }
+
+      .cta-note {
+        margin-top: 12px;
+        font-size: 12px;
+        color: #aaa;
+        font-weight: 300;
+      }
+
+      /* Divider */
+      .divider {
+        height: 1px;
+        background: #efefef;
+        margin: 36px 0;
+      }
+
+      /* Sign-off */
+      .signoff {
+        font-size: 14px;
+        color: #555;
+        line-height: 1.8;
+        font-weight: 300;
+      }
+
+      .signoff strong {
+        display: block;
+        font-size: 15px;
+        font-weight: 500;
+        color: #1c1c1c;
+        margin-top: 8px;
+      }
+
+      /* Footer */
+      .email-footer {
+        background-color: #1c1c1c;
+        padding: 24px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .footer-copy {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.35);
+        font-weight: 300;
+      }
+
+      .footer-links {
+        display: flex;
+        gap: 20px;
+      }
+
+      .footer-links a {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.4);
+        text-decoration: none;
+        font-weight: 300;
+      }
+
+      .footer-links a:hover {
+        color: #ff4a00;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-wrapper">
+      <!-- Header -->
+      <div class="email-header">
+        <span class="logo-text">Zapier</span>
+        <div class="logo-dot"></div>
+      </div>
+
+      <!-- Hero -->
+      <div class="email-hero">
+        <p class="hero-eyebrow">Welcome aboard</p>
+        <h1 class="hero-heading">Automate the<br /><em>ordinary.</em></h1>
+        <p class="hero-sub">
+          Your account is ready. Start connecting your apps and let Zapier
+          handle the repetitive work — so you can focus on what matters most.
+        </p>
+      </div>
+
+      <!-- Body -->
+      <div class="email-body">
+        <div class="feature-block">
+          <p class="feature-label">Why Zapier</p>
+          <p class="feature-title">Your apps, working as one</p>
+          <p class="feature-text">
+            Zapier connects over 6,000 apps — from Gmail and Slack to Salesforce
+            and Shopify — without writing a single line of code. Set it up once
+            and let automation run in the background, every day.
+          </p>
+        </div>
+
+        <div class="steps">
+          <p class="steps-heading">Getting started</p>
+
+          <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <strong>Log in to your account</strong>
+              <span
+                >Access your dashboard and explore the platform at your own
+                pace.</span
+              >
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <strong>Create your first Zap</strong>
+              <span
+                >Browse our library of pre-built automations or build a custom
+                workflow tailored to your needs.</span
+              >
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <strong>Let it run</strong>
+              <span
+                >Once activated, your Zap runs automatically — no maintenance
+                required.</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="cta-wrap">
+          <a href="#" class="cta-btn">Go to My Dashboard</a>
+          <p class="cta-note">
+            Questions? Our support team is always available.
+          </p>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="signoff">
+          <p>
+            We're glad you're here. If you ever need assistance, have feedback,
+            or simply want to share what you've built — don't hesitate to reach
+            out.
+          </p>
+          <strong>The Zapier Team</strong>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="email-footer">
+        <span class="footer-copy">© 2025 Zapier Inc. All rights reserved.</span>
+        <div class="footer-links">
+          <a href="#">Help Center</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Unsubscribe</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
