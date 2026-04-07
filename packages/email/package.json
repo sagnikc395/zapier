@@ -1,0 +1,26 @@
+{
+  "name": "email",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "exports": {
+    "*": "./src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "handlebars": "^4.7.9",
+    "lodash": "^4.18.1",
+    "nodemailer": "^8.0.5"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.17.24",
+    "@types/nodemailer": "^8.0.0"
+  }
+}
