@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Navbar from "./Navbar";
-import { getSessionDetails } from "@/helper";
+import { getSessionDetails } from "@repo/utils";
 
 function MainSection({ children }: { children?: React.ReactNode }) {
   const session = getSessionDetails();

@@ -14,6 +14,7 @@
     "@repo/types": "*",
     "@repo/typescript-config": "*",
     "@repo/ui": "*",
+    "@repo/utils": "*",
     "@tailwindcss/postcss": "^4.2.2",
     "axios": "^1.14.0",
     "clsx": "^2.1.1",
