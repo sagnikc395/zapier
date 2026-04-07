@@ -48,3 +48,13 @@ const SelectedActionSchema = z.object({
 });
 
 type TypeSelectedAction = z.infer<typeof SelectedActionSchema>;
+
+export { SignUpSchema, SignInSchema, CreateZapSchema };
+
+export type {
+  TypeSignUp,
+  TypeSignIn,
+  TypeCreateZapSchema,
+  TypeSelectedTrigger,
+  TypeSelectedAction,
+};
