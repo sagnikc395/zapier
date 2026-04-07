@@ -26,20 +26,30 @@ model Zap {
   userId      Int
   zapRun      ZapRun[]
   triggerId   String
-  trigger     Trigger?
+  trigger     Trigger? @relation(fields: [], references: [])
   actions     Action[]
-  user User @relation(fields: [userId], references: [:id])
+  user        User     @relation(fields: [userId], references: [id])
   createdDate DateTime @default(now())
   isActive    Boolean  @default(false)
 }
 
 model ZapRun {
+  zap   Zap?    @relation(fields: [zapId], references: [id])
+  zapId String?
 }
 
 model Trigger {
+  id        String            @id @default(uuid())
+  metadata  Json              @default("{}")
+  triggerID String
+  zaps      Zap[]
+  zapId     String            @unique
+  trigger   AvailableTriggers @relation(fields: [triggerID], references: [id])
 }
 
 model Action {
+  zap   Zap?    @relation(fields: [zapId], references: [id])
+  zapId String?
 }
 
 model AvailableTriggers {
