@@ -20,4 +20,31 @@ model User {
   zaps     Zap[]
 }
 
-model 
+model Zap {
+  id          String   @id @default(uuid())
+  name        String   @default("New Zap")
+  userId      Int
+  zapRun      ZapRun[]
+  triggerId   String
+  trigger     Trigger?
+  actions     Action[]
+  user User @relation(fields: [userId], references: [:id])
+  createdDate DateTime @default(now())
+  isActive    Boolean  @default(false)
+}
+
+model ZapRun {
+}
+
+model Trigger {
+}
+
+model Action {
+}
+
+model AvailableTriggers {
+  id         String    @id @default(uuid())
+  type       String    @unique
+  trigger    Trigger[]
+  image_link String
+}
