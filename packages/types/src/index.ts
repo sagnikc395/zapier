@@ -22,10 +22,22 @@ type TypeSignIn = z.infer<typeof SignInSchema>;
 
 const CreateZapSchema = z.object({
   availableTriggerId: z.string(),
-  triggerType: z.string(),
   triggerMetaData: z.any().optional(),
+  actions: z
+    .object({
+      availableActionId: z.string(),
+      actionMetaData: z.any().optional(),
+    })
+    .array(),
 });
 
 type TypeCreateZapSchema = z.infer<typeof CreateZapSchema>;
 
+const SelectedTriggerSchema = z.object({
+  availableTriggerId: z.string(),
+  triggerType: z.string(),
+  triggerMetaData: z.any().optional(),
+});
+
+type TypeSelectedTrigger = z.infer<typeof SelectedTriggerSchema>;
 
