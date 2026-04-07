@@ -48,8 +48,20 @@ model Trigger {
 }
 
 model Action {
-  zap   Zap?    @relation(fields: [zapId], references: [id])
-  zapId String?
+  id           String           @id @default(uuid())
+  actionId     String
+  zapId        String
+  zap          Zap              @relation(fields: [zapId], references: [id])
+  action       AvailableActions @relation(fields: [actionId], references: [id])
+  sortingOrder Int              @default(0)
+  metadata     Json             @default("{}")
+}
+
+model AvailableActions {
+  id     String   @id @default(uuid())
+  type   String   @unique
+  action Action[]
+  image  String
 }
 
 model AvailableTriggers {
