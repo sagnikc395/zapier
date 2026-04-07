@@ -48,11 +48,16 @@ High-level flow of a Zap from trigger to completion:
                               │ webhook / event
                               ▼
    ┌────────────┐      ┌──────────────┐      ┌─────────────────┐
-   │   web      │─────▶│   hooks api  │─────▶│   PostgreSQL    │
-   │ (Next.js)  │      │ (trigger in) │      │  Zap / ZapRun   │
-   │  build &   │      └──────────────┘      │     Outbox      │
-   │ manage Zap │                            └────────┬────────┘
-   └────────────┘                                     │
+   │   web      │◀────▶│    server    │      │   PostgreSQL    │
+   │ (Next.js)  │      │  (Express    │─────▶│  Zap / ZapRun   │
+   │ build &    │      │   REST API)  │      │     Outbox      │
+   │ manage Zap │      └──────────────┘      └────────┬────────┘
+   └────────────┘             ▲                       │
+                              │ webhook               │
+                       ┌──────────────┐               │
+                       │   hooks api  │───────────────┤
+                       │ (trigger in) │               │
+                       └──────────────┘               │
                                                       │ polls outbox
                                                       ▼
                                              ┌─────────────────┐
@@ -79,15 +84,36 @@ High-level flow of a Zap from trigger to completion:
 
 Key ideas:
 
-- The **web** app is where users sign in, pick a trigger, chain actions, and
-  activate a Zap.
-- When an external event hits, it is persisted alongside a ZapRunOutbox row in
-  a single DB transaction — no event is lost even if Kafka is momentarily
-  unavailable.
-- The **processor** drains the outbox into Kafka.
-- The **worker** consumes Kafka, executes a single action at a time, updates
-  progress in Postgres, and re-publishes the next action in the chain until
-  the Zap run completes.
+- The **web** app (Next.js) is where users sign up, log in, view their
+  dashboard of Zaps, and use the visual editor to pick a trigger, chain
+  actions, and publish a Zap.
+- The **server** app is an Express REST API that backs the web app. It
+  exposes `/api/auth`, `/api/zaps`, `/api/triggers`, and `/api/actions` for
+  account management and CRUD on Zaps, available triggers, and available
+  actions.
+- The **hooks** app is the public webhook ingress. When an external event
+  hits it, the event is persisted alongside a `ZapRunOutbox` row in a single
+  DB transaction — no event is lost even if Kafka is momentarily unavailable.
+- The **processor** polls the outbox table and publishes pending runs to
+  Kafka, then marks them as dispatched.
+- The **worker** consumes Kafka, executes a single action at a time (e.g.
+  send email via the shared `email` package), updates progress in Postgres,
+  and re-publishes the next action in the chain until the Zap run completes.
+
+### Web app routes
+
+- `/login`, `/sign-up` — authentication
+- `/dashboard` — list, enable/disable, and manage existing Zaps
+- `/editor` — visual Zap builder: pick a trigger, chain ordered actions
+- `/not-found` — 404 fallback
+
+### REST API (server)
+
+- `POST /api/auth/...` — sign up, sign in, session management
+- `GET/POST /api/zaps` — list and create Zaps; fetch a single Zap with its
+  trigger and actions
+- `GET /api/triggers` — list `AvailableTriggers` the user can pick from
+- `GET /api/actions` — list `AvailableActions` the user can chain
 
 ## Project Structure
 
@@ -96,14 +122,18 @@ The project is organized as a monorepo using TurboRepo with npm workspaces.
 ```text
 root/
 ├── apps/
-│   ├── web/               # Next.js frontend — build and manage Zaps
-│   └── docs/              # Next.js documentation site
+│   ├── web/               # Next.js frontend — login, dashboard, visual Zap editor
+│   ├── server/            # Express REST API — auth, zaps, triggers, actions
+│   ├── hooks/              # Webhook ingress — receives external trigger events
+│   ├── processor/         # Outbox poller — drains ZapRunOutbox into Kafka
+│   └── worker/            # Kafka consumer — executes one action, enqueues next
 ├── packages/
 │   ├── db/                # Prisma schema + generated client (PostgreSQL)
 │   ├── kafka/             # Shared Kafka producer/consumer config
-│   ├── email/             # Shared email-sending utilities
+│   ├── email/             # Shared email-sending utilities (built-in action)
 │   ├── types/             # Shared TS types & Zod schemas (zap, trigger, action)
 │   ├── ui/                # Shared React UI components
+│   ├── utils/             # Shared utility helpers
 │   ├── eslint-config/     # Shared ESLint configuration
 │   └── typescript-config/ # Shared TypeScript configuration
 ├── turbo.json
