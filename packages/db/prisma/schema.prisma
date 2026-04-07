@@ -53,8 +53,14 @@ model Action {
 }
 
 model AvailableTriggers {
-  id         String    @id @default(uuid())
-  type       String    @unique
-  trigger    Trigger[]
-  image_link String
+  id      String    @id @default(uuid())
+  type    String    @unique
+  trigger Trigger[]
+  image   String
+}
+
+model ZapRunOutbox {
+  id       String @id @default(uuid())
+  zapRunId String @unique
+  zapRun   ZapRun @relation(fields: [zapRunId], references: [id])
 }
