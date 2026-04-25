@@ -1,9 +1,12 @@
 {
   "name": "@repo/db",
   "version": "1.0.0",
+  "type": "module",
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "check-types": "tsc --noEmit -p tsconfig.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "exports": {
@@ -12,7 +15,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "devDependencies": {
     "@types/pg": "^8.20.0",
     "prisma": "^7.7.0"

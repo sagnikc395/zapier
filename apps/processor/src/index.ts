@@ -1,5 +1,6 @@
 import kafka from "@repo/kafka";
 import client from "@repo/db";
+import "dotenv/config";
 
 async function main() {
   const producer = kafka.producer();
@@ -17,20 +18,19 @@ async function main() {
       take: 10,
     });
 
-    pendingRows.forEach((r) => {
-      console.log(r);
-      producer.send({
+    if (pendingRows.length > 0) {
+      await producer.send({
         topic: "zap-events",
-        messages: pendingRows.map((r) => ({
+        messages: pendingRows.map((r: { zapRunId: string }) => ({
           value: JSON.stringify({ zapRunId: r?.zapRunId, stage: 1 }),
         })),
       });
-    });
+    }
 
     await client.zapRunOutbox.deleteMany({
       where: {
         id: {
-          in: pendingRows.map((r) => r.id),
+          in: pendingRows.map((r: { id: string }) => r.id),
         },
       },
     });

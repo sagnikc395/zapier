@@ -1,24 +1,21 @@
 import { z } from "zod";
 
-//authentication schema validation
-const SignUpSchema = z.object({
+const SignupSchema = z.object({
   name: z.string().min(3, { message: "Name Must have 3 characters" }),
   email: z.string().email({ message: "Enter a valid email" }),
   password: z.string().min(8, { message: "Password must have 8 characters" }),
 });
 
-type TypeSignUp = z.infer<typeof SignUpSchema>;
+type TypeSignup = z.infer<typeof SignupSchema>;
 
-const SignInSchema = z.object({
+const SigninSchema = z.object({
   email: z.string().email({
     message: "Enter a valid email",
   }),
   password: z.string().min(8),
 });
 
-type TypeSignIn = z.infer<typeof SignInSchema>;
-
-// zap schema
+type TypeSignin = z.infer<typeof SigninSchema>;
 
 const CreateZapSchema = z.object({
   availableTriggerId: z.string(),
@@ -49,11 +46,11 @@ const SelectedActionSchema = z.object({
 
 type TypeSelectedAction = z.infer<typeof SelectedActionSchema>;
 
-export { SignUpSchema, SignInSchema, CreateZapSchema };
+export { SignupSchema, SigninSchema, CreateZapSchema };
 
 export type {
-  TypeSignUp,
-  TypeSignIn,
+  TypeSignup,
+  TypeSignin,
   TypeCreateZapSchema,
   TypeSelectedTrigger,
   TypeSelectedAction,

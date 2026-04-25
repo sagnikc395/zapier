@@ -1,9 +1,10 @@
 import express, { Request, Response } from "express";
 import client from "@repo/db";
+import "dotenv/config";
 
 const app = express();
 app.use(express.json());
-const HOOKS_PORT = 8000;
+const HOOKS_PORT = Number(process.env.HOOKS_PORT ?? 8000);
 
 app.post("/hooks/:userId/:zapId", async (req: Request, res: Response) => {
   const { zapId } = req.params;
@@ -14,7 +15,8 @@ app.post("/hooks/:userId/:zapId", async (req: Request, res: Response) => {
     const newZapRun = await tx.zapRun.create({
       data: {
         zapId: zapId as string,
-        metadata: req.body,
+        type: "webhook",
+        image: JSON.stringify(req.body ?? {}),
       },
     });
     await tx.zapRunOutbox.create({

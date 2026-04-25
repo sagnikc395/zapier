@@ -13,7 +13,7 @@ export const signup = async (req: Request, res: Response): Promise<any> => {
   if (validation.error) {
     return res.status(422).json({
       message: "Invalid credentials",
-      error: formatZodError(validation.error),
+      error: formatZodError(validation.error.flatten().fieldErrors),
     });
   }
 
@@ -73,7 +73,7 @@ export const signin = async (req: Request, res: Response): Promise<any> => {
   if (validation.error) {
     return res.status(422).json({
       message: "Invalid credentials",
-      error: formatZodError(validation.error),
+      error: formatZodError(validation.error.flatten().fieldErrors),
     });
   }
 
@@ -127,7 +127,7 @@ export const getUserDetails = async (
   });
 
   if (!user) {
-    res.status(403).json({
+    return res.status(403).json({
       message: "User not found!",
     });
   }

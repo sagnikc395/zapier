@@ -1,6 +1,5 @@
 import MainSection from "../components/MainSection";
 import Image from "next/image";
-import HeroImage from "@/public/homepage-hero.avif";
 
 export default function Home() {
   return (
@@ -21,7 +20,7 @@ export default function Home() {
           alt="ZapMate Image"
           width={550}
           height={550}
-          src={HeroImage}
+          src="/globe.svg"
         />
       </div>
     </MainSection>

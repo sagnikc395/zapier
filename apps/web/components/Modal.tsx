@@ -40,7 +40,7 @@ const Modal = ({
           Authorization: localStorage.getItem("token"),
         },
       });
-      setAvailableItem(response?.data?.avialableTriggers);
+      setAvailableItem(response?.data?.availableTriggers ?? []);
     } catch (error) {
       toast.error(error as string);
     }

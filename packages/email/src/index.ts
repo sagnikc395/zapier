@@ -30,7 +30,7 @@ export async function sendEmail(
   try {
     await transporter.sendMail({
       from: process.env.SENDER_EMAIL,
-      toAddr,
+      to: toAddr,
       subject,
       html: htmlContent,
     });
@@ -47,7 +47,7 @@ export async function sendEmailWithTextBody(
   try {
     await transporter.sendMail({
       from: process.env.SENDER_EMAIL,
-      toAddr,
+      to: toAddr,
       subject,
       text: body,
     });

@@ -9,7 +9,9 @@ export function authMiddleware(
   const token = req.headers.authorization as unknown as string;
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET as string);
-    //@ts-ignore
+    if (typeof payload === "string" || typeof payload.id !== "number") {
+      throw new Error("Invalid token payload");
+    }
     req.id = payload.id;
     next();
   } catch (e) {
