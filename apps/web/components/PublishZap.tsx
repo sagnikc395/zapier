@@ -29,15 +29,13 @@ const PublishZap = ({ zapId }: { zapId?: String }) => {
       const fetchZapDetails = async () => {
         try {
           const zapIdString = JSON.parse(zapId as string);
-          const {
-            data: { zap },
-          } = await axios.get(`http://localhost:5000/api/zaps/${zapIdString}`, {
-            headers: { Authorization: localStorage.getItem("token") },
-          });
-          setSelectedTrigger({
-            availableTriggerId: zap.trigger.trigger.id,
-            triggerType: zap.trigger.trigger.type,
-          });
+          const response = await axios.get<{ data: { zap: any } }>(
+            `http://localhost:5000/api/zaps/${zapIdString}`,
+            {
+              headers: { Authorization: localStorage.getItem("token") },
+            },
+          );
+          const zap = response.data.data.zap;
           setSelectedActions(
             zap.actions.map((a: any) => ({
               availableActionId: a.action.id,

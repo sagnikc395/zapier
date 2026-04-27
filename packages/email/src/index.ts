@@ -24,8 +24,8 @@ export async function sendEmail(
 ) {
   const path = "/templates/" + body;
   const template = fs.readFileSync(__dirname + path, "utf-8").toString();
-  const html = handlebars.compile(template);
-  const htmlContent = html || "";
+  const compiled = handlebars.compile(template);
+  const htmlContent = compiled({});
 
   try {
     await transporter.sendMail({

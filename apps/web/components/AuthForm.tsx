@@ -89,10 +89,13 @@ export const LoginForm = () => {
   const signin = async (data: TypeLogin) => {
     setLoading(true);
     await axios
-      .post("http://localhost:5000/api/auth/signin", {
-        email: data?.login_email,
-        password: data?.login_pw,
-      })
+      .post<{ data: { token: string; user: any } }>(
+        "http://localhost:5000/api/auth/signin",
+        {
+          email: data?.login_email,
+          password: data?.login_pw,
+        },
+      )
       .then((res) => {
         localStorage.setItem("token", res?.data?.data?.token);
         localStorage.setItem("user", JSON.stringify(res?.data?.data));

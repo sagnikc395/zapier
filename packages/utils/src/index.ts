@@ -22,6 +22,7 @@ export const getSessionDetails = () => {
     user: {},
   };
   if (
+    typeof window !== "undefined" &&
     localStorage.getItem("user") !== null &&
     localStorage.getItem("token") !== null
   ) {

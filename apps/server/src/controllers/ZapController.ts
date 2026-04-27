@@ -114,7 +114,7 @@ export const fetchZapWithId = async (
     const zap = await client.zap.findFirst({
       where: {
         userId: id,
-        id: req.params.zapId,
+        id: req.params.zapId as string,
       },
       include: {
         actions: {
@@ -160,7 +160,7 @@ export const deleteZapWithId = async (
 
     const zap = await client.zap.findFirst({
       where: {
-        id: req.params.zapId,
+        id: req.params.zapId as string,
         userId: id,
       },
     });
@@ -174,19 +174,19 @@ export const deleteZapWithId = async (
     const deletedZap = await client.$transaction(async (tx) => {
       await tx.trigger.delete({
         where: {
-          zapId: req.params.zapId,
+          zapId: req.params.zapId as string,
         },
       });
 
       await tx.action.deleteMany({
         where: {
-          zapId: req.params.zapId,
+          zapId: req.params.zapId as string,
         },
       });
 
       return await tx.zap.delete({
         where: {
-          id: req.params.zapId,
+          id: req.params.zapId as string,
         },
       });
     });
@@ -218,7 +218,7 @@ export const renameZapWithId = async (
     const existingZap = await client.zap.findFirst({
       where: {
         userId: id,
-        id: req.params.zapId,
+        id: req.params.zapId as string,
       },
     });
 
@@ -228,7 +228,7 @@ export const renameZapWithId = async (
 
     const zap = await client.zap.update({
       where: {
-        id: req.params.zapId,
+        id: req.params.zapId as string,
       },
       data: {
         name: name,
@@ -263,7 +263,7 @@ export const enableZapExecution = async (
     const existingZap = await client.zap.findFirst({
       where: {
         userId: id,
-        id: req.params.zapId,
+        id: req.params.zapId as string,
       },
     });
 
@@ -273,7 +273,7 @@ export const enableZapExecution = async (
 
     const zap = await client.zap.update({
       where: {
-        id: req.params.zapId,
+        id: req.params.zapId as string,
       },
       data: {
         isActive: isActive,
@@ -317,7 +317,7 @@ export const updateZapWithId = async (
       const existingZap = await tx.zap.findFirst({
         where: {
           userId: id,
-          id: req.params.zapId,
+          id: req.params.zapId as string,
         },
       });
 
@@ -327,7 +327,7 @@ export const updateZapWithId = async (
 
       await tx.trigger.update({
         where: {
-          zapId: req.params.zapId,
+          zapId: req.params.zapId as string,
         },
         data: {
           triggerID: availableTriggerId,
@@ -337,13 +337,13 @@ export const updateZapWithId = async (
 
       await tx.action.deleteMany({
         where: {
-          zapId: req.params.zapId,
+          zapId: req.params.zapId as string,
         },
       });
 
       await tx.zap.update({
         where: {
-          id: req.params.zapId,
+          id: req.params.zapId as string,
         },
         data: {
           actions: {
@@ -358,7 +358,7 @@ export const updateZapWithId = async (
 
       return tx.zap.findUnique({
         where: {
-          id: req.params.zapId,
+          id: req.params.zapId as string,
         },
         include: {
           actions: {

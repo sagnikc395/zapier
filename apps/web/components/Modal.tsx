@@ -35,11 +35,14 @@ const Modal = ({
 
   const fetchAvailableTriggers = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/triggers", {
-        headers: {
-          Authorization: localStorage.getItem("token"),
+      const response = await axios.get<{ availableTriggers: any[] }>(
+        "http://localhost:5000/api/triggers",
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
         },
-      });
+      );
       setAvailableItem(response?.data?.availableTriggers ?? []);
     } catch (error) {
       toast.error(error as string);
@@ -48,11 +51,14 @@ const Modal = ({
 
   const fetchAvailableActions = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/actions", {
-        headers: {
-          Authorization: localStorage.getItem("token"),
+      const response = await axios.get<{ availableActions: any[] }>(
+        "http://localhost:5000/api/actions",
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
         },
-      });
+      );
       setAvailableItem(response?.data?.availableActions);
     } catch (error) {
       toast.error(error as string);

@@ -45,10 +45,22 @@ interface TypeTrigger {
 
 function page() {
   const router = useRouter();
-  const session = getSessionDetails();
-  if (!session) {
-    router.push("/");
-    return;
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    const session = getSessionDetails();
+    if (!session || !session.token) {
+      router.push("/");
+    } else {
+      setToken(session.token);
+      fetchData(session.token);
+    }
+  }, [router]);
+
+  const [token, setToken] = useState<string>("");
+
+  if (!mounted) {
+    return null;
   }
 
   const [loading, setLoading] = useState<boolean>(true);
@@ -59,12 +71,14 @@ function page() {
     total: 0,
   });
 
-  const fetchData = async () => {
+  const fetchData = async (token: string) => {
     setLoading(true);
     try {
-      const response = await axios.get(`http://localhost:5000/api/zaps`, {
+      const response = await axios.get<{
+        data: { zaps: TypeZap[]; total: number };
+      }>(`http://localhost:5000/api/zaps`, {
         headers: {
-          Authorization: session.token,
+          Authorization: token,
           "Cache-Control": "no-cache",
         },
       });
@@ -99,10 +113,10 @@ function page() {
         await axios.patch(
           `http://localhost:5000/api/zaps/${zap.id}/rename`,
           { name: e.target.value },
-          { headers: { Authorization: session.token } },
+          { headers: { Authorization: token } },
         );
         toast.success("Zap renamed successfully!");
-        fetchData();
+        fetchData(token);
       }
     } catch (error) {
       toast.error("Could not update the zap, please try again.");
@@ -116,9 +130,9 @@ function page() {
       await axios.patch(
         `http://localhost:5000/api/zaps/${zap.id}/enable`,
         { isActive: !!e.target.checked },
-        { headers: { Authorization: session.token } },
+        { headers: { Authorization: token } },
       );
-      fetchData();
+      fetchData(token);
     } catch (error) {
       toast.error(`Could not ${zap.isActive ? "disable" : "enable"} Zap`);
     }
@@ -127,18 +141,20 @@ function page() {
   const handleZapDelete = async (zap: TypeZap) => {
     try {
       await axios.delete(`http://localhost:5000/api/zaps/${zap.id}`, {
-        headers: { Authorization: session.token },
+        headers: { Authorization: token },
       });
       toast.success(`Zap deleted successfully`);
-      fetchData();
+      fetchData(token);
     } catch (error) {
       toast.error("Could not delete the zap!");
     }
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (token) {
+      fetchData(token);
+    }
+  }, [token]);
 
   return (
     <MainSection>

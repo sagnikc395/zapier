@@ -16,7 +16,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/kafkajs": "^1.8.2",
     "kafkajs": "^2.2.4"
   }
 }
