@@ -1,4 +1,4 @@
-# Zapier Clone Monorepo
+# Zapier 
 
 This repository is a Zapier-style workflow automation platform built as a Turbo monorepo. Users can sign up, create Zaps with one trigger and multiple ordered actions, publish them, and invoke webhook URLs that create `ZapRun` jobs for downstream processing.
 
